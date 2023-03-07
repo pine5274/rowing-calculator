@@ -4,6 +4,14 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -40,6 +48,11 @@ const PaceTo = () => {
     const [seconds, setSeconds] = useState(45);
     const [tenths, setTenths] = useState(0);
     const [watts, setWatts] = useState(0);
+    const [choices, setChoices] = useState([]);
+
+    useEffect(() => {
+        setWatts((2.80 / ((Number(minutes) * 60 + Number(seconds) + Number(tenths) * 0.1) / 500) ** 3).toFixed(1));
+    }, [minutes, seconds, tenths]);
   
     const handleMinutesChange = (e) => {
         setMinutes(e.target.value);
@@ -50,10 +63,11 @@ const PaceTo = () => {
     const handleTenthsChange = (e) => {
         setTenths(e.target.value);
     };
-
-    useEffect(() => {
-        setWatts((2.80 / ((Number(minutes) * 60 + Number(seconds) + Number(tenths) * 0.1) / 500) ** 3).toFixed(1));
-    }, [minutes, seconds, tenths]);
+    const saveChoice = () => {
+        const pace = `${minutes}:${seconds}.${tenths}`;
+        const choice = {pace: pace, watts: watts};
+        setChoices([...choices, choice]);
+    };
 
     return (
         <>
@@ -106,6 +120,17 @@ const PaceTo = () => {
                 </Box>
             </Box>
             <h2>{watts} watts</h2>
+            <Box sx={{ display: 'flex', maxWidth: 1000, }}>
+                <Button 
+                    sx={{ m: 2, ml: "auto",}}
+                    variant="contained"
+                    endIcon={<LibraryAddIcon />}    
+                    onClick={saveChoice}
+                >
+                    Save
+                </Button>
+            </Box>
+            <ChoseTable choices={choices} />
             <Divider />
             <Paper sx={{ p: 2, mt: 4, }}>
                 <Typography 
@@ -133,9 +158,15 @@ const WattsTo = () => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [watts, setWatts] = useState(200);
+    const [choices, setChoices] = useState([]);
   
     const handleWattsChange = (e) => {
         setWatts(e.target.value);
+    };
+    const saveChoice = () => {
+        const pace = `${minutes}:${seconds}`;
+        const choice = {pace: pace, watts: watts};
+        setChoices([...choices, choice]);
     };
 
     useEffect(() => {
@@ -162,6 +193,17 @@ const WattsTo = () => {
                 />
             </Box>
             <h2>{minutes}:{seconds} /500m</h2>
+            <Box sx={{ display: 'flex', maxWidth: 1000, }}>
+                <Button 
+                    sx={{ m: 2, ml: "auto",}}
+                    variant="contained"
+                    endIcon={<LibraryAddIcon />}    
+                    onClick={saveChoice}
+                >
+                    Save
+                </Button>
+            </Box>
+            <ChoseTable choices={choices} />
             <Divider />
             <Paper sx={{ p: 2, mt: 4, }}>
                 <Typography 
@@ -215,4 +257,48 @@ const PaceToWatts = () => {
         </>
     )
 }
+
+const ChoseTable = (props) => {
+    if (props.choices.length === 0) {
+        return;
+    }
+
+    function createData(
+        id,
+        pace,
+        watts
+    ) {
+        return { id, pace, watts };
+    }
+
+    const rows = props.choices.map((x, index) => {
+        return createData(index, x.pace, x.watts);
+    });
+
+    return (
+        <TableContainer component={Paper} sx={{my:2, maxWidth: 300 }}>
+            <Table size="small" aria-label="sculling chose table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell align="right">/500m</TableCell>
+                        <TableCell align="right">watts</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.id}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell align="right">{row.pace}</TableCell>
+                        <TableCell align="right">{row.watts}</TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+};
+
+
 export default PaceToWatts

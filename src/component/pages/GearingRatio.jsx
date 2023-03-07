@@ -81,7 +81,13 @@ const ScullingGearRatio = () => {
         setInboard(e.target.value);
     };
     const saveChoice = () => {
-        const choice = {span: span, oarLength: oarLength, inboard: inboard, overLap: overLap, gearingRatio: gearingRatio};
+        const choice = {
+            span: span,
+            oarLength: oarLength,
+            inboard: inboard,
+            overLap: overLap,
+            gearingRatio: gearingRatio
+        };
         setChoices([...choices, choice]);
     };
 
@@ -228,7 +234,13 @@ const SweepGearRatio = () => {
         setInboard(e.target.value);
     };
     const saveChoice = () => {
-        const choice = {span: spread, oarLength: oarLength, inboard: inboard, overLap: overLap, gearingRatio: gearingRatio};
+        const choice = {
+            span: spread,
+            oarLength: oarLength,
+            inboard: inboard,
+            overLap: overLap,
+            gearingRatio: gearingRatio
+        };
         setChoices([...choices, choice]);
     };
 
