@@ -10,7 +10,7 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import FlagIcon from '@mui/icons-material/Flag';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
-const IndexList = () => {
+const IndexList = (props) => {
     const ROUTE = '/rowing-calculator';
     return (
         <>
@@ -18,6 +18,7 @@ const IndexList = () => {
                 <ListItem key={'Gearing Ratio'} disablePadding>
                     <ListItemButton
                         component={Link}
+                        onClick={props.onClick}
                         to={`${ROUTE}/gearing-ratio`}
                     >
                         <ListItemIcon>
@@ -29,6 +30,7 @@ const IndexList = () => {
                 <ListItem key={'Pace to Watt'} disablePadding>
                     <ListItemButton
                         component={Link}
+                        onClick={props.onClick}
                         to={`${ROUTE}/pace-to-watts`}
                     >
                         <ListItemIcon>
@@ -40,6 +42,7 @@ const IndexList = () => {
                 <ListItem key={'Ergo Prediction'} disablePadding>
                     <ListItemButton
                         component={Link}
+                        onClick={props.onClick}
                         to={`${ROUTE}/ergo-prediction`}
                     >
                         <ListItemIcon>
@@ -51,6 +54,7 @@ const IndexList = () => {
                 <ListItem key={'Weight Adjustment'} disablePadding>
                     <ListItemButton
                         component={Link}
+                        onClick={props.onClick}
                         to={`${ROUTE}/weight-adjustment`}
                     >
                         <ListItemIcon>

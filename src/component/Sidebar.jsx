@@ -31,6 +31,7 @@ const Sidebar = (props) => {
 				<ListItem key={'Index'} disablePadding>
 					<ListItemButton
 						component={RouterLink}
+						onClick={handleDrawerToggle}
 						to="/rowing-calculator/"
 					>
 						<ListItemIcon>
@@ -41,7 +42,9 @@ const Sidebar = (props) => {
 				</ListItem>
 			</List>
 			<Divider />
-			<IndexList />
+			<IndexList
+				onClick={handleDrawerToggle}
+			/>
 		</div>
     );
 
@@ -80,7 +83,6 @@ const Sidebar = (props) => {
 				sx={{ width: { lg: props.drawerWidth }, flexShrink: { lg: 0 } }}
 				aria-label="mailbox folders"
 			>
-				{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
 				<Drawer
 					variant="temporary"
 					open={mobileOpen}
