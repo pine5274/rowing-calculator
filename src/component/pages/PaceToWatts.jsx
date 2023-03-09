@@ -43,12 +43,11 @@ TabPanel.propTypes = {
 	value: PropTypes.number.isRequired,
 };
 
-const PaceTo = () => {
+const PaceTo = ({ addChoice, choices }) => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [tenths, setTenths] = useState(0);
     const [watts, setWatts] = useState(0);
-    const [choices, setChoices] = useState([]);
 
     useEffect(() => {
         setWatts((2.80 / ((Number(minutes) * 60 + Number(seconds) + Number(tenths) * 0.1) / 500) ** 3).toFixed(1));
@@ -66,7 +65,7 @@ const PaceTo = () => {
     const saveChoice = () => {
         const pace = `${minutes}:${seconds}.${tenths}`;
         const choice = {pace: pace, watts: watts};
-        setChoices([...choices, choice]);
+        addChoice(choice);
     };
 
     return (
@@ -154,11 +153,10 @@ const PaceTo = () => {
     )
 }
 
-const WattsTo = () => {
+const WattsTo = ({ addChoice, choices }) => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [watts, setWatts] = useState(200);
-    const [choices, setChoices] = useState([]);
   
     const handleWattsChange = (e) => {
         setWatts(e.target.value);
@@ -166,7 +164,7 @@ const WattsTo = () => {
     const saveChoice = () => {
         const pace = `${minutes}:${seconds}`;
         const choice = {pace: pace, watts: watts};
-        setChoices([...choices, choice]);
+        addChoice(choice);
     };
 
     useEffect(() => {
@@ -206,7 +204,7 @@ const WattsTo = () => {
             <ChoseTable choices={choices} />
             <Divider />
             <Paper sx={{ p: 2, mt: 4, }}>
-                <Typography 
+                <Typography
                     sx={{ color: 'caption.main', }}
                     variant="body2"
                     component="div"
@@ -228,8 +226,13 @@ const WattsTo = () => {
 }
 
 const PaceToWatts = () => {
+    const [choices, setChoices] = useState([]);
+    const addChoice = (choice) => {
+        setChoices([...choices, choice]);
+    }
+
     const [tabNum, setTabNum] = React.useState(0);
-    const handleTabChange = (event, newValue) => {
+    const handleTabChange = (e, newValue) => {
         setTabNum(newValue);
     };
 
@@ -248,14 +251,14 @@ const PaceToWatts = () => {
                 </Tabs>
                 </Box>
                 <TabPanel value={tabNum} index={0}>
-                    <PaceTo />
+                    <PaceTo addChoice={addChoice} choices={choices} />
                 </TabPanel>
                 <TabPanel value={tabNum} index={1}>
-                    <WattsTo />
+                    <WattsTo addChoice={addChoice} choices={choices} />
                 </TabPanel>
             </Box>
         </>
-    )
+    );
 }
 
 const ChoseTable = (props) => {
