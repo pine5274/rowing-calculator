@@ -23,7 +23,8 @@ const ErgoPrediction = () => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [tenths, setTenths] = useState(0);
-    const [distance, setDistance] = useState(2000);
+    // const [distance, setDistance] = useState(2000);
+    const distance = 2000;
     const [rows, setRows] = useState([]);
 
     const handleMinutesChange = (e) => {
@@ -35,9 +36,9 @@ const ErgoPrediction = () => {
     const handleTenthsChange = (e) => {
         setTenths(e.target.value);
     };
-    const handleDistanceChange = (e) => {
-        setDistance(e.target.value);
-    };
+    // const handleDistanceChange = (e) => {
+    //     setDistance(e.target.value);
+    // };
 
     const timeTrial = [1000, 2000, 6000];
     const distanceTrial = [1800, 3600];
@@ -97,6 +98,7 @@ const ErgoPrediction = () => {
                 Based on your performance , we have predicted your maximum performance over some common race distances.
             </Typography>
             <Box sx={{ p: 3, }} >
+            <h2>Best 2000m Pace</h2>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <TextField
                         label="pace"
@@ -145,7 +147,7 @@ const ErgoPrediction = () => {
                         </Typography>
                     </Box>
                 </Box>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                {/* <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <TextField
                         label="distance"
                         id="minutes"
@@ -162,7 +164,7 @@ const ErgoPrediction = () => {
                             m
                         </Typography>
                     </Box>
-                </Box>
+                </Box> */}
                 <TableContainer sx={{ my: 3, maxWidth: 400 }} component={Paper}>
                     <Table size="small" aria-label="ergo predict table">
                         <TableHead>
