@@ -43,7 +43,7 @@ TabPanel.propTypes = {
 	value: PropTypes.number.isRequired,
 };
 
-const PaceTo = ({ addChoice, choices }) => {
+const PaceToTab = ({ addChoice, choices }) => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [tenths, setTenths] = useState(0);
@@ -131,29 +131,11 @@ const PaceTo = ({ addChoice, choices }) => {
             </Box>
             <ChoseTable choices={choices} />
             <Divider />
-            <Paper sx={{ p: 2, mt: 4, }}>
-                <Typography 
-                    sx={{ color: 'caption.main', }}
-                    variant="body2"
-                    component="div"
-                >
-                    watts = 2.80/pace³
-                </Typography>
-                <Typography 
-                    sx={{ color: 'caption.main', }}
-                    variant="body2"
-                    component="div"
-                >
-                <Link href="https://www.concept2.com/indoor-rowers/training/calculators/watts-calculator">
-                    concept2 watts-calculator
-                </Link>
-                </Typography>
-            </Paper>
         </>
     )
 }
 
-const WattsTo = ({ addChoice, choices }) => {
+const WattsToTab = ({ addChoice, choices }) => {
     const [minutes, setMinutes] = useState(1);
     const [seconds, setSeconds] = useState(45);
     const [watts, setWatts] = useState(200);
@@ -203,38 +185,26 @@ const WattsTo = ({ addChoice, choices }) => {
             </Box>
             <ChoseTable choices={choices} />
             <Divider />
-            <Paper sx={{ p: 2, mt: 4, }}>
-                <Typography
-                    sx={{ color: 'caption.main', }}
-                    variant="body2"
-                    component="div"
-                >
-                    pace = ³√(2.80/watts)
-                </Typography>
-                <Typography 
-                    sx={{ color: 'caption.main', }}
-                    variant="body2"
-                    component="div"
-                >
-                <Link href="https://www.concept2.com/indoor-rowers/training/calculators/watts-calculator">
-                    concept2 watts-calculator
-                </Link>
-                </Typography>
-            </Paper>
         </>
     )
 }
 
 const PaceToWatts = () => {
     const [choices, setChoices] = useState([]);
+    const [tabNum, setTabNum] = React.useState(0);
     const addChoice = (choice) => {
         setChoices([...choices, choice]);
     }
-
-    const [tabNum, setTabNum] = React.useState(0);
     const handleTabChange = (e, newValue) => {
         setTabNum(newValue);
     };
+
+    let formula = '';
+    if (tabNum === 0) {
+        formula = 'watts = 2.80/pace³';
+    } else {
+        formula = 'pace = ³√(2.80/watts)';
+    }
 
     return (
         <>
@@ -251,18 +221,19 @@ const PaceToWatts = () => {
                 </Tabs>
                 </Box>
                 <TabPanel value={tabNum} index={0}>
-                    <PaceTo addChoice={addChoice} choices={choices} />
+                    <PaceToTab addChoice={addChoice} choices={choices} />
                 </TabPanel>
                 <TabPanel value={tabNum} index={1}>
-                    <WattsTo addChoice={addChoice} choices={choices} />
+                    <WattsToTab addChoice={addChoice} choices={choices} />
                 </TabPanel>
+                <Formula formula={formula} ></Formula>
             </Box>
         </>
     );
 }
 
-const ChoseTable = (props) => {
-    if (props.choices.length === 0) {
+const ChoseTable = ({ choices }) => {
+    if (choices.length === 0) {
         return;
     }
 
@@ -274,12 +245,12 @@ const ChoseTable = (props) => {
         return { id, pace, watts };
     }
 
-    const rows = props.choices.map((x, index) => {
+    const rows = choices.map((x, index) => {
         return createData(index, x.pace, x.watts);
     });
 
     return (
-        <TableContainer component={Paper} sx={{my:2, maxWidth: 300 }}>
+        <TableContainer component={Paper} sx={{ my:2, maxWidth: 300 }}>
             <Table size="small" aria-label="sculling chose table">
                 <TableHead>
                     <TableRow>
@@ -301,6 +272,29 @@ const ChoseTable = (props) => {
             </Table>
         </TableContainer>
     );
+};
+
+const Formula = ( { formula } ) => {
+    return(
+        <Paper sx={{ p: 2, mt: 4, }}>
+            <Typography
+                sx={{ color: 'caption.main', }}
+                variant="body2"
+                component="div"
+            >
+                { formula }
+            </Typography>
+            <Typography 
+                sx={{ color: 'caption.main', }}
+                variant="body2"
+                component="div"
+            >
+            <Link href="https://www.concept2.com/indoor-rowers/training/calculators/watts-calculator">
+                concept2 watts-calculator
+            </Link>
+            </Typography>
+        </Paper>
+    )
 };
 
 
