@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -25,7 +26,7 @@ const PaceToWatts = () => {
     const onChangePace = (pace) => {
         setWatts((2.80 / ((Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1) / 500) ** 3).toFixed(1));
         setPace(pace);
-    }
+    };
     const onChangeWatts = (watts) => {
         let s = 500 * (2.8 / Number(watts)) ** (1/3);
         const minutes = Math.floor(s / 60);
@@ -34,13 +35,17 @@ const PaceToWatts = () => {
         const milliseconds = parseFloat(String(s).split('.')[1]);
         setPace({ minutes: minutes, seconds: seconds, milliseconds: milliseconds });
         setWatts(watts);
-    }
-    const addChoice = (choice) => {
-        setChoices([...choices, choice]);
-    }
+    };
     const handleTabChange = (e, newValue) => {
         setTabNum(newValue);
     };
+    const saveChoice = () => {
+        const choice = {pace: `${pace.minutes}:${pace.seconds}.${pace.milliseconds}`, watts: watts};
+        setChoices([...choices, choice]);
+    };
+    const resetChoice = () => {
+        setChoices([]);
+    }
 
     let formula = '';
     if (tabNum === 0) {
@@ -64,11 +69,31 @@ const PaceToWatts = () => {
                 </Tabs>
                 </Box>
                 <TabPanel value={tabNum} index={0}>
-                    <PaceToTab pace={pace} watts={watts} onChangePace={onChangePace} addChoice={addChoice} choices={choices} />
+                    <PaceToTab pace={pace} watts={watts} onChangePace={onChangePace} />
                 </TabPanel>
                 <TabPanel value={tabNum} index={1}>
-                    <WattsToTab pace={pace} watts={watts} onChangeWatts={onChangeWatts} addChoice={addChoice} choices={choices} />
+                    <WattsToTab pace={pace} watts={watts} onChangeWatts={onChangeWatts} />
                 </TabPanel>
+                <Box sx={{ display: 'flex', maxWidth: 1000, }}>
+                    <Button 
+                        sx={{ m: 2, ml: "auto",}}
+                        variant="contained"
+                        endIcon={<LibraryAddIcon />}    
+                        onClick={saveChoice}
+                    >
+                        Save
+                    </Button>
+                    <Button 
+                        sx={{ m: 2 }}
+                        variant="contained"
+                        color='error'
+                        endIcon={<RestartAltIcon />}    
+                        onClick={resetChoice}
+                    >
+                        Reset
+                    </Button>
+                </Box>
+                <ChoseTable choices={choices} />
                 <Divider />
                 <Formula formula={formula} ></Formula>
             </Box>
@@ -112,11 +137,6 @@ const PaceToTab = ({ pace, watts, onChangePace, addChoice, choices }) => {
     };
     const handleTenthsChange = (e) => {
         onChangePace({...pace, milliseconds: e.target.value });
-    };
-    const saveChoice = () => {
-        const pace = `${minutes}:${seconds}.${tenths}`;
-        const choice = {pace: pace, watts: watts};
-        addChoice(choice);
     };
 
     return (
@@ -170,17 +190,6 @@ const PaceToTab = ({ pace, watts, onChangePace, addChoice, choices }) => {
                 </Box>
             </Box>
             <h2>{watts} watts</h2>
-            <Box sx={{ display: 'flex', maxWidth: 1000, }}>
-                <Button 
-                    sx={{ m: 2, ml: "auto",}}
-                    variant="contained"
-                    endIcon={<LibraryAddIcon />}    
-                    onClick={saveChoice}
-                >
-                    Save
-                </Button>
-            </Box>
-            <ChoseTable choices={choices} />
         </>
     )
 }
@@ -189,12 +198,6 @@ const WattsToTab = ({ pace, watts, onChangeWatts, addChoice, choices }) => {
   
     const handleWattsChange = (e) => {
         onChangeWatts(e.target.value)
-        setWatts(e.target.value);
-    };
-    const saveChoice = () => {
-        const pace = `${minutes}:${seconds}`;
-        const choice = {pace: pace, watts: watts};
-        addChoice(choice);
     };
 
     return (
@@ -211,17 +214,6 @@ const WattsToTab = ({ pace, watts, onChangeWatts, addChoice, choices }) => {
                 />
             </Box>
             <h2>{pace.minutes}:{pace.seconds}.{pace.milliseconds} /500m</h2>
-            <Box sx={{ display: 'flex', maxWidth: 1000, }}>
-                <Button 
-                    sx={{ m: 2, ml: "auto",}}
-                    variant="contained"
-                    endIcon={<LibraryAddIcon />}    
-                    onClick={saveChoice}
-                >
-                    Save
-                </Button>
-            </Box>
-            <ChoseTable choices={choices} />
         </>
     )
 }
