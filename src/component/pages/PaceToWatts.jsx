@@ -17,6 +17,50 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
+const PaceToWatts = () => {
+    const [choices, setChoices] = useState([]);
+    const [tabNum, setTabNum] = React.useState(0);
+    const addChoice = (choice) => {
+        setChoices([...choices, choice]);
+    }
+    const handleTabChange = (e, newValue) => {
+        setTabNum(newValue);
+    };
+
+    let formula = '';
+    if (tabNum === 0) {
+        formula = 'watts = 2.80/pace³';
+    } else {
+        formula = 'pace = ³√(2.80/watts)';
+    }
+
+    return (
+        <>
+            <h1>Pace to Watts Calculator</h1>
+            <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs
+                    value={tabNum}
+                    onChange={handleTabChange}
+                    aria-label="secondary tabs example"
+                >
+                    <Tab value={0} label="Pace to Watts" />
+                    <Tab value={1} label="Watts to Pace" />
+                </Tabs>
+                </Box>
+                <TabPanel value={tabNum} index={0}>
+                    <PaceToTab addChoice={addChoice} choices={choices} />
+                </TabPanel>
+                <TabPanel value={tabNum} index={1}>
+                    <WattsToTab addChoice={addChoice} choices={choices} />
+                </TabPanel>
+                <Divider />
+                <Formula formula={formula} ></Formula>
+            </Box>
+        </>
+    );
+}
+
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
   
@@ -130,7 +174,6 @@ const PaceToTab = ({ addChoice, choices }) => {
                 </Button>
             </Box>
             <ChoseTable choices={choices} />
-            <Divider />
         </>
     )
 }
@@ -184,52 +227,8 @@ const WattsToTab = ({ addChoice, choices }) => {
                 </Button>
             </Box>
             <ChoseTable choices={choices} />
-            <Divider />
         </>
     )
-}
-
-const PaceToWatts = () => {
-    const [choices, setChoices] = useState([]);
-    const [tabNum, setTabNum] = React.useState(0);
-    const addChoice = (choice) => {
-        setChoices([...choices, choice]);
-    }
-    const handleTabChange = (e, newValue) => {
-        setTabNum(newValue);
-    };
-
-    let formula = '';
-    if (tabNum === 0) {
-        formula = 'watts = 2.80/pace³';
-    } else {
-        formula = 'pace = ³√(2.80/watts)';
-    }
-
-    return (
-        <>
-            <h1>Pace to Watts Calculator</h1>
-            <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs
-                    value={tabNum}
-                    onChange={handleTabChange}
-                    aria-label="secondary tabs example"
-                >
-                    <Tab value={0} label="Pace to Watts" />
-                    <Tab value={1} label="Watts to Pace" />
-                </Tabs>
-                </Box>
-                <TabPanel value={tabNum} index={0}>
-                    <PaceToTab addChoice={addChoice} choices={choices} />
-                </TabPanel>
-                <TabPanel value={tabNum} index={1}>
-                    <WattsToTab addChoice={addChoice} choices={choices} />
-                </TabPanel>
-                <Formula formula={formula} ></Formula>
-            </Box>
-        </>
-    );
 }
 
 const ChoseTable = ({ choices }) => {
