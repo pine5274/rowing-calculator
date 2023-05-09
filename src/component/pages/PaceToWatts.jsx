@@ -18,8 +18,23 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
 const PaceToWatts = () => {
+    const [pace, setPace] = useState({ minutes: 1, seconds: 45, milliseconds: 0 })
+    const [watts, setWatts] = useState((2.80 / ((Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1) / 500) ** 3).toFixed(1));
     const [choices, setChoices] = useState([]);
-    const [tabNum, setTabNum] = React.useState(0);
+    const [tabNum, setTabNum] = useState(0);
+    const onChangePace = (pace) => {
+        setWatts((2.80 / ((Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1) / 500) ** 3).toFixed(1));
+        setPace(pace);
+    }
+    const onChangeWatts = (watts) => {
+        let s = 500 * (2.8 / Number(watts)) ** (1/3);
+        const minutes = Math.floor(s / 60);
+        s = (s % 60).toFixed(1);
+        const seconds = Math.trunc(s);
+        const milliseconds = parseFloat(String(s).split('.')[1]);
+        setPace({ minutes: minutes, seconds: seconds, milliseconds: milliseconds });
+        setWatts(watts);
+    }
     const addChoice = (choice) => {
         setChoices([...choices, choice]);
     }
@@ -49,10 +64,10 @@ const PaceToWatts = () => {
                 </Tabs>
                 </Box>
                 <TabPanel value={tabNum} index={0}>
-                    <PaceToTab addChoice={addChoice} choices={choices} />
+                    <PaceToTab pace={pace} watts={watts} onChangePace={onChangePace} addChoice={addChoice} choices={choices} />
                 </TabPanel>
                 <TabPanel value={tabNum} index={1}>
-                    <WattsToTab addChoice={addChoice} choices={choices} />
+                    <WattsToTab pace={pace} watts={watts} onChangeWatts={onChangeWatts} addChoice={addChoice} choices={choices} />
                 </TabPanel>
                 <Divider />
                 <Formula formula={formula} ></Formula>
@@ -87,24 +102,16 @@ TabPanel.propTypes = {
 	value: PropTypes.number.isRequired,
 };
 
-const PaceToTab = ({ addChoice, choices }) => {
-    const [minutes, setMinutes] = useState(1);
-    const [seconds, setSeconds] = useState(45);
-    const [tenths, setTenths] = useState(0);
-    const [watts, setWatts] = useState(0);
+const PaceToTab = ({ pace, watts, onChangePace, addChoice, choices }) => {
 
-    useEffect(() => {
-        setWatts((2.80 / ((Number(minutes) * 60 + Number(seconds) + Number(tenths) * 0.1) / 500) ** 3).toFixed(1));
-    }, [minutes, seconds, tenths]);
-  
     const handleMinutesChange = (e) => {
-        setMinutes(e.target.value);
+        onChangePace({...pace, minutes: e.target.value });
     };
     const handleSecondsChange = (e) => {
-        setSeconds(e.target.value);
+        onChangePace({...pace, seconds: e.target.value });
     };
     const handleTenthsChange = (e) => {
-        setTenths(e.target.value);
+        onChangePace({...pace, milliseconds: e.target.value });
     };
     const saveChoice = () => {
         const pace = `${minutes}:${seconds}.${tenths}`;
@@ -119,7 +126,7 @@ const PaceToTab = ({ addChoice, choices }) => {
                     label="pace"
                     id="minutes"
                     sx={{ m: 1, width: '6ch' }}
-                    value={minutes}
+                    value={pace.minutes}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     size="small"
                     onChange={handleMinutesChange}
@@ -134,7 +141,7 @@ const PaceToTab = ({ addChoice, choices }) => {
                 <TextField
                     id="seconds"
                     sx={{ m: 1, width: '6ch' }}
-                    value={seconds}
+                    value={pace.seconds}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     size="small"
                     onChange={handleSecondsChange}
@@ -149,7 +156,7 @@ const PaceToTab = ({ addChoice, choices }) => {
                 <TextField
                     id="tenths"
                     sx={{ m: 1, width: '6ch' }}
-                    value={tenths}
+                    value={pace.milliseconds}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     size="small"
                     onChange={handleTenthsChange}
@@ -178,12 +185,10 @@ const PaceToTab = ({ addChoice, choices }) => {
     )
 }
 
-const WattsToTab = ({ addChoice, choices }) => {
-    const [minutes, setMinutes] = useState(1);
-    const [seconds, setSeconds] = useState(45);
-    const [watts, setWatts] = useState(200);
+const WattsToTab = ({ pace, watts, onChangeWatts, addChoice, choices }) => {
   
     const handleWattsChange = (e) => {
+        onChangeWatts(e.target.value)
         setWatts(e.target.value);
     };
     const saveChoice = () => {
@@ -191,16 +196,6 @@ const WattsToTab = ({ addChoice, choices }) => {
         const choice = {pace: pace, watts: watts};
         addChoice(choice);
     };
-
-    useEffect(() => {
-        let s = 500 * (2.8 / Number(watts)) ** (1/3);
-        setMinutes(Math.floor(s / 60));
-        s = (s % 60).toFixed(1);
-        if (s < 10) {
-            s = "0" + String(s);
-        }
-        setSeconds(s);
-    }, [watts]);
 
     return (
         <>
@@ -215,7 +210,7 @@ const WattsToTab = ({ addChoice, choices }) => {
                     onChange={handleWattsChange}
                 />
             </Box>
-            <h2>{minutes}:{seconds} /500m</h2>
+            <h2>{pace.minutes}:{pace.seconds}.{pace.milliseconds} /500m</h2>
             <Box sx={{ display: 'flex', maxWidth: 1000, }}>
                 <Button 
                     sx={{ m: 2, ml: "auto",}}
