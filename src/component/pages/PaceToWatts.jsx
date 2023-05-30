@@ -19,7 +19,7 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 
 const PaceToWatts = () => {
-    const [pace, setPace] = useState({ minutes: 1, seconds: 45, milliseconds: 0 })
+    const [pace, setPace] = useState({ minutes: 1, seconds: 45, milliseconds: 0 });
     const [watts, setWatts] = useState((2.80 / ((Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1) / 500) ** 3).toFixed(1));
     const [choices, setChoices] = useState([]);
     const [tabNum, setTabNum] = useState(0);
@@ -194,7 +194,7 @@ const PaceToTab = ({ pace, watts, onChangePace, addChoice, choices }) => {
     )
 }
 
-const WattsToTab = ({ pace, watts, onChangeWatts, addChoice, choices }) => {
+const WattsToTab = ({ pace, watts, onChangeWatts }) => {
   
     const handleWattsChange = (e) => {
         onChangeWatts(e.target.value)
