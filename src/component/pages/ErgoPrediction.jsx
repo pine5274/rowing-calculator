@@ -19,6 +19,7 @@ const ErgoPrediction = () => {
     const distance = 2000;
     const timeTrial = [1000, 2000, 6000];
     const distanceTrial = [1200, 1800, 3600];
+
     const createTableData = (currentPace) => {
         const tt = timeTrial.map((race) => {
             const raceStr = `${(race)}m`;
@@ -34,8 +35,21 @@ const ErgoPrediction = () => {
         });
         return [...tt, ...dt];
     };
+
     const getPaceSecond = (currentPace) => {
         return Number(currentPace.minutes) * 60 + Number(currentPace.seconds) + Number(currentPace.milliseconds) * 0.1;
+    };
+
+    const convertTimeToMMSS = (time) => {
+        const mm = `${Math.floor(time / 60)}`;
+        let ss = (time % 60).toFixed(1);
+        if (ss < 10) {
+            ss = "0" + String(ss);
+        } else {
+            ss = String(ss);
+        }
+
+        return `${mm}:${ss}`;
     };
 
     const predictTTPace = (race, currentPace) => {
@@ -58,18 +72,6 @@ const ErgoPrediction = () => {
         const target_seconds = 4 * getPaceSecond(currentPace);
         const time = (race / ((Number(distance) / 500) * (race / target_seconds) ** (17/18)));
         return `${(500 * race / time).toFixed(1)}m`;
-    };
-    
-    const convertTimeToMMSS = (time) => {
-        const mm = `${Math.floor(time / 60)}`;
-        let ss = (time % 60).toFixed(1);
-        if (ss < 10) {
-            ss = "0" + String(ss);
-        } else {
-            ss = String(ss);
-        }
-
-        return `${mm}:${ss}`;
     };
 
     const [pace, setPace] = useState({ minutes: 1, seconds: 45, milliseconds: 0 });
@@ -144,61 +146,74 @@ const ErgoPrediction = () => {
                         </Typography>
                     </Box>
                 </Box>
-                <TableContainer sx={{ my: 3, maxWidth: 400 }} component={Paper}>
-                    <Table size="small" aria-label="ergo predict table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell>Race</TableCell>
-                            <TableCell align="right">Predict Pace&nbsp;(/500m)</TableCell>
-                            <TableCell align="right">Predict Result&nbsp;</TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {tableData.map((row) => (
-                            <TableRow
-                                key={row.raceStr}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                            <TableCell component="th" scope="row">
-                                {row.raceStr}
-                            </TableCell>
-                            <TableCell align="right">{row.paceStr}</TableCell>
-                            <TableCell align="right">{row.resultStr}</TableCell>
-                            </TableRow>
-                        ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <PredictionTable tableData={tableData} />
                 <Divider />
-                <Accordion sx={{ mt: 5,}}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                    >
-                        <Typography>Formulas Used</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <Typography 
-                            sx={{ color: 'caption.main', mb: 1,}}
-                            variant="body2"
-                            component="div"
-                        >
-                            Predict Pace = target_pace * (distance / target_distance) ^(1/18)
-                        </Typography>
-                        <Typography 
-                            sx={{ color: 'caption.main', }}
-                            variant="body2"
-                            component="div"
-                        >
-                            For example:
-                            <br></br>
-                            If your personal best 2000tt is 1:45 [/500m], predict 6000tt pace is calculated as (105*(6000/2000)^(1/18)), which equals 111.6 [s/500m]
-                        </Typography>
-                    </AccordionDetails>
-                </Accordion>
+                <Formula />
             </Box>
         </>
     )
 }
+
+const PredictionTable = ({ tableData }) => {
+    return (
+        <TableContainer sx={{ my: 3, maxWidth: 400 }} component={Paper}>
+        <Table size="small" aria-label="ergo predict table">
+            <TableHead>
+            <TableRow>
+                <TableCell>Race</TableCell>
+                <TableCell align="right">Predict Pace&nbsp;(/500m)</TableCell>
+                <TableCell align="right">Predict Result&nbsp;</TableCell>
+            </TableRow>
+            </TableHead>
+            <TableBody>
+            {tableData.map((row) => (
+                <TableRow
+                    key={row.raceStr}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                <TableCell component="th" scope="row">
+                    {row.raceStr}
+                </TableCell>
+                <TableCell align="right">{row.paceStr}</TableCell>
+                <TableCell align="right">{row.resultStr}</TableCell>
+                </TableRow>
+            ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+    );
+}
+
+const Formula = () => {
+    return (
+        <Accordion sx={{ mt: 5,}}>
+        <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+        >
+            <Typography>Formulas Used</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+            <Typography 
+                sx={{ color: 'caption.main', mb: 1,}}
+                variant="body2"
+                component="div"
+            >
+                Predict Pace = target_pace * (distance / target_distance) ^(1/18)
+            </Typography>
+            <Typography 
+                sx={{ color: 'caption.main', }}
+                variant="body2"
+                component="div"
+            >
+                For example:
+                <br></br>
+                If your personal best 2000tt is 1:45 [/500m], predict 6000tt pace is calculated as (105*(6000/2000)^(1/18)), which equals 111.6 [s/500m]
+            </Typography>
+        </AccordionDetails>
+    </Accordion>
+    );
+}
+
 export default ErgoPrediction
