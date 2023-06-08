@@ -6,9 +6,6 @@ import ManIcon from '@mui/icons-material/Man';
 import WomanIcon from '@mui/icons-material/Woman';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import Divider from '@mui/material/Divider';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 
 
 const WeightAdjustment = () => {

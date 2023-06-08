@@ -127,7 +127,7 @@ TabPanel.propTypes = {
 	value: PropTypes.number.isRequired,
 };
 
-const PaceToTab = ({ pace, watts, onChangePace, addChoice, choices }) => {
+const PaceToTab = ({ pace, watts, onChangePace }) => {
 
     const handleMinutesChange = (e) => {
         onChangePace({...pace, minutes: e.target.value });
