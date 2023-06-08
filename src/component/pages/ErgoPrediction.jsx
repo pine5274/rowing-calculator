@@ -67,19 +67,29 @@ const ErgoPrediction = () => {
         minute: timeTrial,
         distance: distanceTrial,
     });
+    const [addValue, setAddValue] = useState({
+        type: 'distance',
+        value: ''
+    });
     
     const onChangeMinutes = (e) => {
-        const currentPace = {...pace, minutes: e.target.value };
+        const currentPace = { ...pace, minutes: e.target.value };
         setPace(currentPace);
     };
     const onChangeSeconds = (e) => {
-        const currentPace = {...pace, seconds: e.target.value };
+        const currentPace = { ...pace, seconds: e.target.value };
         setPace(currentPace);
     };
     const onChangeMilliseconds = (e) => {
-        const currentPace = {...pace, milliseconds: e.target.value };
+        const currentPace = { ...pace, milliseconds: e.target.value };
         setPace(currentPace);
     };
+    const handleAlignment = (e, newAlignment) => {
+        setAddValue({ ...addValue, type: newAlignment});
+    };
+    const onChangePrediction = (e) => {
+        setAddValue({ ...addValue, value: e.target.value });
+    }
 
     const createTableData = (paceSecond) => {
         const tt = race.minute.map((race) => {
@@ -99,11 +109,6 @@ const ErgoPrediction = () => {
 
     const paceSecond = Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1;
     const tableData = createTableData(paceSecond);
-
-    const [alignment, setAlignment] = useState('distance');
-    const handleAlignment = (e, newAlignment) => {
-        setAlignment(newAlignment);
-    };
 
     return (
         <>
@@ -166,7 +171,7 @@ const ErgoPrediction = () => {
                         <PredictionTable tableData={tableData} />
                     </Grid>
                     <Grid item md={4}>
-                        <AddPrediction alignment={alignment} handleAlignment={handleAlignment} />
+                        <AddPrediction addValue={addValue} handleAlignment={handleAlignment} onChangePrediction={onChangePrediction} />
                     </Grid>
                 </Grid>
                 <Divider />
@@ -206,17 +211,16 @@ const PredictionTable = ({ tableData }) => {
     );
 }
 
-const AddPrediction = ({ alignment, handleAlignment }) => {
+const AddPrediction = ({ addValue, handleAlignment, onChangePrediction }) => {
 
-    const unit = alignment === 'distance' ? 'm' : 'min' ;
-    const value = alignment === 'distance' ? '10000' : '90' ;
+    const unit = addValue.type === 'distance' ? 'm' : 'min' ;
 
     return (
         <Paper sx={{ my: 3 }}>
             <ToggleButtonGroup
                 sx={{ mx: 1, mb: 3, width: '20ch', }}
                 color="primary"
-                value={alignment}
+                value={addValue.type}
                 exclusive
                 onChange={handleAlignment}
                 size="small"
@@ -230,11 +234,12 @@ const AddPrediction = ({ alignment, handleAlignment }) => {
                 </ToggleButton>
             </ToggleButtonGroup>
             <TextField
-                label={alignment}
+                label={addValue.type}
                 id="add"
                 sx={{ m: 1, width: '25ch' }}
                 inputProps={{ inputMode: 'numeric', type: 'tel', }}
-                value={value}
+                value={addValue.value}
+                onChange={onChangePrediction}
                 InputProps={{
                     endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
                 }}
@@ -243,7 +248,7 @@ const AddPrediction = ({ alignment, handleAlignment }) => {
                 sx={{ m: 2, ml: "auto",}}
                 variant="contained"
                 endIcon={<LibraryAddIcon />}    
-                // onClick={saveChoice}
+                // onClick={onAddPrediction}
             >
                 Add
             </Button>
