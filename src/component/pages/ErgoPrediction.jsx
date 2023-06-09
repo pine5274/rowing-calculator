@@ -64,8 +64,8 @@ const ErgoPrediction = () => {
 
     const [pace, setPace] = useState({ minutes: 1, seconds: 45, milliseconds: 0 });
     const [race, setRace] = useState({
-        minute: timeTrial,
-        distance: distanceTrial,
+        minute: distanceTrial,
+        distance: timeTrial,
     });
     const [addValue, setAddValue] = useState({
         type: 'distance',
@@ -90,15 +90,23 @@ const ErgoPrediction = () => {
     const onChangePrediction = (e) => {
         setAddValue({ ...addValue, value: e.target.value });
     }
+    const onAddPrediction = () => {
+        const addArray = race[addValue.type];
+        addArray.push(addValue.value);
+        setRace({ ...race, [addValue.type]: addArray });
+    };
+    const resetPrediction = () => {
+        setAddValue({ ...addValue, value: '' });
+    };
 
     const createTableData = (paceSecond) => {
-        const tt = race.minute.map((race) => {
+        const tt = race.distance.map((race) => {
             const raceStr = `${(race)}m`;
             const paceStr = predictTTPace(race, paceSecond);
             const resultStr = predictTTResult(race, paceSecond);
             return { raceStr, paceStr, resultStr };
         });
-        const dt = race.distance.map((race) => {
+        const dt = race.minute.map((race) => {
             const raceStr = `${race/60}min`;
             const paceStr = predictDTPace(race, paceSecond);
             const resultStr = predictDTResult(race, paceSecond);
@@ -171,7 +179,13 @@ const ErgoPrediction = () => {
                         <PredictionTable tableData={tableData} />
                     </Grid>
                     <Grid item md={4}>
-                        <AddPrediction addValue={addValue} handleAlignment={handleAlignment} onChangePrediction={onChangePrediction} />
+                        <AddPrediction
+                            addValue={addValue}
+                            handleAlignment={handleAlignment}
+                            onChangePrediction={onChangePrediction}
+                            resetPrediction={resetPrediction}
+                            onAddPrediction={onAddPrediction}
+                        />
                     </Grid>
                 </Grid>
                 <Divider />
@@ -211,7 +225,13 @@ const PredictionTable = ({ tableData }) => {
     );
 }
 
-const AddPrediction = ({ addValue, handleAlignment, onChangePrediction }) => {
+const AddPrediction = ({
+    addValue,
+    handleAlignment,
+    onChangePrediction,
+    onAddPrediction,
+    resetPrediction
+}) => {
 
     const unit = addValue.type === 'distance' ? 'm' : 'min' ;
 
@@ -248,16 +268,16 @@ const AddPrediction = ({ addValue, handleAlignment, onChangePrediction }) => {
                 sx={{ m: 2, ml: "auto",}}
                 variant="contained"
                 endIcon={<LibraryAddIcon />}    
-                // onClick={onAddPrediction}
+                onClick={onAddPrediction}
             >
                 Add
             </Button>
-            <Button 
+            <Button
                 sx={{ m: 2 }}
                 variant="contained"
                 color='error'
                 endIcon={<RestartAltIcon />}    
-                // onClick={resetChoice}
+                onClick={resetPrediction}
             >
                 Reset
             </Button>
