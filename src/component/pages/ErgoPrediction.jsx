@@ -71,6 +71,7 @@ const ErgoPrediction = () => {
         type: 'distance',
         value: ''
     });
+    const [isValid, setIsValid] = useState(false);
     
     const onChangeMinutes = (e) => {
         const currentPace = { ...pace, minutes: e.target.value };
@@ -88,14 +89,27 @@ const ErgoPrediction = () => {
         setAddValue({ ...addValue, type: newAlignment});
     };
     const onChangePrediction = (e) => {
+        if (isNaN(e.target.value) || e.target.value === '') {
+            setIsValid(false);
+        } else {
+            setIsValid(true);
+        }
         setAddValue({ ...addValue, value: e.target.value });
     }
     const onAddPrediction = () => {
-        const addArray = race[addValue.type];
-        addArray.push(addValue.value);
-        setRace({ ...race, [addValue.type]: addArray });
+        const prevArray = race[addValue.type];
+        const addNum = Number(addValue.value);
+        console.log(prevArray);
+        if (!prevArray.includes(addNum)) {
+            prevArray.push(addNum);
+            setRace({ ...race, [addValue.type]: prevArray });
+        }
     };
     const resetPrediction = () => {
+        setRace({
+            minute: distanceTrial,
+            distance: timeTrial,
+        });
         setAddValue({ ...addValue, value: '' });
     };
 
@@ -185,6 +199,7 @@ const ErgoPrediction = () => {
                             onChangePrediction={onChangePrediction}
                             resetPrediction={resetPrediction}
                             onAddPrediction={onAddPrediction}
+                            isValid={isValid}
                         />
                     </Grid>
                 </Grid>
@@ -230,10 +245,12 @@ const AddPrediction = ({
     handleAlignment,
     onChangePrediction,
     onAddPrediction,
-    resetPrediction
+    resetPrediction,
+    isValid
 }) => {
 
     const unit = addValue.type === 'distance' ? 'm' : 'min' ;
+    const helperText = isValid ? '' : '*Only number.';
 
     return (
         <Paper sx={{ my: 3 }}>
@@ -263,12 +280,14 @@ const AddPrediction = ({
                 InputProps={{
                     endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
                 }}
+                helperText={helperText}
             />
             <Button 
                 sx={{ m: 2, ml: "auto",}}
                 variant="contained"
                 endIcon={<LibraryAddIcon />}    
                 onClick={onAddPrediction}
+                disabled={!isValid}
             >
                 Add
             </Button>
