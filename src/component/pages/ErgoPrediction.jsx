@@ -139,7 +139,7 @@ const ErgoPrediction = () => {
                 Based on your performance , we have predicted your maximum performance over some common race distances.
             </Typography>
             <Box sx={{ p: 3, }} >
-            <h2>Best 2000m Pace</h2>
+                <h2>Best 2000m Pace</h2>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                     <TextField
                         label="pace"
@@ -188,11 +188,11 @@ const ErgoPrediction = () => {
                         </Typography>
                     </Box>
                 </Box>
-                <Grid container spacing={2}>
-                    <Grid item md={8}>
+                <Grid container spacing={2} sx={{ py: 3, }}>
+                    <Grid item md={6}>
                         <PredictionTable tableData={tableData} />
                     </Grid>
-                    <Grid item md={4}>
+                    <Grid item md={6}>
                         <AddPrediction
                             addValue={addValue}
                             handleAlignment={handleAlignment}
@@ -212,7 +212,7 @@ const ErgoPrediction = () => {
 
 const PredictionTable = ({ tableData }) => {
     return (
-        <TableContainer sx={{ my: 3, maxWidth: 400 }} component={Paper}>
+        <TableContainer sx={{maxWidth: 400 }} component={Paper}>
             <Table size="small" aria-label="ergo predict table">
                 <TableHead>
                     <TableRow>
@@ -253,35 +253,39 @@ const AddPrediction = ({
     const helperText = isValid ? '' : '*Only number.';
 
     return (
-        <Paper sx={{ my: 3 }}>
-            <ToggleButtonGroup
-                sx={{ mx: 1, mb: 3, width: '20ch', }}
-                color="primary"
-                value={addValue.type}
-                exclusive
-                onChange={handleAlignment}
-                size="small"
-                aria-label="text alignment"
-            >
-                <ToggleButton sx={{ width: '100%', }} value="distance" aria-label="left aligned">
-                    distance
-                </ToggleButton>
-                <ToggleButton sx={{ width: '100%', }} value="minute" aria-label="right aligned">
-                    minute
-                </ToggleButton>
-            </ToggleButtonGroup>
-            <TextField
-                label={addValue.type}
-                id="add"
-                sx={{ m: 1, width: '25ch' }}
-                inputProps={{ inputMode: 'numeric', type: 'tel', }}
-                value={addValue.value}
-                onChange={onChangePrediction}
-                InputProps={{
-                    endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
-                }}
-                helperText={helperText}
-            />
+        <Paper sx={{ p: 2 }}>
+            <div>
+                <ToggleButtonGroup
+                    sx={{ mx: 1, mb: 3, width: '20ch', }}
+                    color="primary"
+                    value={addValue.type}
+                    exclusive
+                    onChange={handleAlignment}
+                    size="small"
+                    aria-label="text alignment"
+                    >
+                    <ToggleButton sx={{ width: '100%', }} value="distance" aria-label="left aligned">
+                        distance
+                    </ToggleButton>
+                    <ToggleButton sx={{ width: '100%', }} value="minute" aria-label="right aligned">
+                        minute
+                    </ToggleButton>
+                </ToggleButtonGroup>
+            </div>
+            <div>
+                <TextField
+                    label={addValue.type}
+                    id="add"
+                    sx={{ m: 1, width: '25ch' }}
+                    inputProps={{ inputMode: 'numeric', type: 'tel', }}
+                    value={addValue.value}
+                    onChange={onChangePrediction}
+                    InputProps={{
+                        endAdornment: <InputAdornment position="end">{unit}</InputAdornment>,
+                    }}
+                    helperText={helperText}
+                />
+            </div>
             <Button 
                 sx={{ m: 2, ml: "auto",}}
                 variant="contained"
