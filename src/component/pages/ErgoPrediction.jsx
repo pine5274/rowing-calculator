@@ -98,8 +98,10 @@ const ErgoPrediction = () => {
     }
     const onAddPrediction = () => {
         const prevArray = race[addValue.type];
-        const addNum = Number(addValue.value);
-        console.log(prevArray);
+        let addNum = Number(addValue.value);
+        if (addValue.type === 'minute') {
+            addNum = addNum * 60;
+        }
         if (!prevArray.includes(addNum)) {
             prevArray.push(addNum);
             setRace({ ...race, [addValue.type]: prevArray });
