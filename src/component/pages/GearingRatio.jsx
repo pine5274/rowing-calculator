@@ -53,6 +53,18 @@ function a11yProps(index) {
 }
 
 const ScullingGearRatio = () => {
+    const [oarRig, setOarRig] = useState({
+        span: 159,
+        length: 286,
+        inboard: 88
+    });
+    const getGearingRatio = () => {
+        if (span <= 0) {
+            return '';
+        }
+        
+        return (oarLength - inboard) / (span / 2);
+    }
     const [span, setSpan] = useState(159);
     const [oarLength, setOarLength] = useState(286);
     const [inboard, setInboard] = useState(88);
@@ -68,7 +80,7 @@ const ScullingGearRatio = () => {
             setGearingRatio(gearingRatio.toFixed(3));
             const overLap = Number(inboard) * 2 - Number(span);
             setOverLap(overLap.toFixed(1));
-        }	
+        }
     }, [span, oarLength, inboard]);
 
     const handleSpanChange = (e) => {
@@ -110,7 +122,7 @@ const ScullingGearRatio = () => {
                     id="oar-length"
                     sx={{ m: 1, width: '25ch' }}
                     value={oarLength}
-                    inputProps={{ inputMode: 'numeric', type: 'tel', }}
+                    inputProps={{ inputMode: 'numeric', type: 'tel' }}
                     onChange={handleOarLengthChange}
                     InputProps={{
                         endAdornment: <InputAdornment position="end">cm</InputAdornment>,

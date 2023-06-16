@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -72,7 +71,7 @@ const ErgoPrediction = () => {
         value: ''
     });
     const [isValid, setIsValid] = useState(false);
-    
+
     const onChangeMinutes = (e) => {
         const currentPace = { ...pace, minutes: e.target.value };
         setPace(currentPace);
@@ -190,7 +189,7 @@ const ErgoPrediction = () => {
                         </Typography>
                     </Box>
                 </Box>
-                <Grid container spacing={2} sx={{ py: 3, }}>
+                <Grid container spacing={2} sx={{ py: 3 }}>
                     <Grid item md={6}>
                         <PredictionTable tableData={tableData} />
                     </Grid>
@@ -214,7 +213,7 @@ const ErgoPrediction = () => {
 
 const PredictionTable = ({ tableData }) => {
     return (
-        <TableContainer sx={{maxWidth: 400 }} component={Paper}>
+        <TableContainer sx={{ maxWidth: 400 }} component={Paper}>
             <Table size="small" aria-label="ergo predict table">
                 <TableHead>
                     <TableRow>
@@ -322,7 +321,7 @@ const Formula = () => {
             </AccordionSummary>
             <AccordionDetails>
                 <Typography 
-                    sx={{ color: 'caption.main', mb: 1,}}
+                    sx={{ color: 'caption.main', mb: 1 ,}}
                     variant="body2"
                     component="div"
                 >
