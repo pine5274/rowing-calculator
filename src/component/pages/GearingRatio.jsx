@@ -187,7 +187,7 @@ const ChoseTable = (props) => {
     });
 
     return (
-        <TableContainer component={Paper} sx={{my:2, maxWidth: 1000 }}>
+        <TableContainer component={Paper} sx={{ my:2, maxWidth: 1000 }}>
             <Table sx={{ minWidth: 350 }} size="small" aria-label="sculling chose table">
                 <TableHead>
                     <TableRow>

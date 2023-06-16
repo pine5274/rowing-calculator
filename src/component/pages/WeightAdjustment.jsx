@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 const WeightAdjustment = () => {
     const [pace, setPace] = useState({
@@ -11,6 +20,7 @@ const WeightAdjustment = () => {
     });
     const [weight, setWeight] = useState(75);
     const [standardWeight, setStandardWeight] = useState(75);
+    const [choices, setChoices] = useState([]);
 
     const handleMinutesChange = (e) => {
         const currentPace = { ...pace, minutes: Number(e.target.value) };
@@ -27,10 +37,22 @@ const WeightAdjustment = () => {
     const handleWeightChange = (e) => {
         setWeight(Number(e.target.value));
     };
+    const handleStandardWeightChange = (e) => {
+        setStandardWeight(Number(e.target.value));
+    };
 
+    const saveChoice = () => {
+        const choice = {
+            pace: convertTimeToMMSS(pace.minutes * 60 + pace.seconds + pace.tenths * 0.1),
+            adjustPace: adjustPace,
+            weight: weight,
+            standardWeight: standardWeight
+        };
+        setChoices([...choices, choice]);
+    };
     const calcAdjustPace = () => {
         const currentPace = pace.minutes * 60 + pace.seconds + pace.tenths * 0.1;
-        return currentPace * (((standardWeight + 22) / (Number(weight) + 22)) ** (-2/9));
+        return currentPace * ((standardWeight / weight) ** (-2/9));
     };
     
     const convertTimeToMMSS = (time) => {
@@ -119,9 +141,9 @@ const WeightAdjustment = () => {
                         label="Standard weight"
                         id="weight"
                         sx={{ m: 1, width: '15ch' }}
-                        value={weight}
+                        value={standardWeight}
                         inputProps={{ inputMode: 'numeric', type: 'tel', }}
-                        onChange={handleWeightChange}
+                        onChange={handleStandardWeightChange}
                     />
                     <Box
                         sx={{ mb: 1, display: 'flex', alignItems: 'flex-end', }}
@@ -134,6 +156,17 @@ const WeightAdjustment = () => {
                 <h2>
                     Adjustment Pace: {adjustPace} /500m
                 </h2>
+                <Box sx={{ display: 'flex', maxWidth: 1000, }}>
+                    <Button 
+                        sx={{ m: 2, ml: "auto",}}
+                        variant="contained"
+                        endIcon={<LibraryAddIcon />}    
+                        onClick={saveChoice}
+                    >
+                        Save
+                    </Button>
+                </Box>
+                <ChoseTable choices={choices} />
                 {/* <Divider />
                 <Paper sx={{ p: 2, mt: 4, }}>
                     <Typography 
@@ -157,5 +190,54 @@ const WeightAdjustment = () => {
         </>
     )
 }
+
+const ChoseTable = (props) => {
+    if (props.choices.length === 0) {
+        return;
+    }
+
+    function createData(
+        index,
+        pace,
+        adjustPace,
+        weight,
+        standardWeight,
+    ) {
+        return { index, pace, adjustPace, weight, standardWeight };
+    }
+
+    const rows = props.choices.map((x, index) => {
+        return createData(index, x.pace, x.adjustPace, x.weight, x.standardWeight)
+    });
+
+    return (
+        <TableContainer component={Paper} sx={{ my:2, maxWidth: 1000 }}>
+            <Table sx={{ minWidth: 350 }} size="small" aria-label="sculling chose table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell align="right">Pace</TableCell>
+                        <TableCell align="right">Adjust<br></br>Pace</TableCell>
+                        <TableCell align="right">Weight</TableCell>
+                        <TableCell align="right">Adjust<br></br>Weight</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.index}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                        <TableCell align="right">{row.pace}</TableCell>
+                        <TableCell align="right">{row.adjustPace}</TableCell>
+                        <TableCell align="right">{row.weight}</TableCell>
+                        <TableCell align="right">{row.standardWeight}</TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+};
+
 
 export default WeightAdjustment
