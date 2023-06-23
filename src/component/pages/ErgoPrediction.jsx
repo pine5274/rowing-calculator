@@ -317,7 +317,7 @@ const Formula = () => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography>Formulas Used</Typography>
+                <Typography>Used Formula</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 <Typography 

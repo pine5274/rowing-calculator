@@ -11,6 +11,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Divider from '@mui/material/Divider';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 const WeightAdjustment = () => {
     const [pace, setPace] = useState({
@@ -167,25 +173,8 @@ const WeightAdjustment = () => {
                     </Button>
                 </Box>
                 <ChoseTable choices={choices} />
-                {/* <Divider />
-                <Paper sx={{ p: 2, mt: 4, }}>
-                    <Typography 
-                        sx={{ color: 'caption.main', }}
-                        variant="body2"
-                        component="div"
-                    >
-                        pace = ³√(2.80/watts)
-                    </Typography>
-                    <Typography 
-                        sx={{ color: 'caption.main', }}
-                        variant="body2"
-                        component="div"
-                    >
-                    <Link href="https://www.concept2.com/indoor-rowers/training/calculators/watts-calculator">
-                        concept2 watts-calculator
-                    </Link>
-                    </Typography>
-                </Paper> */}
+                <Divider />
+                <Formula />
             </Box>
         </>
     )
@@ -239,5 +228,27 @@ const ChoseTable = (props) => {
     );
 };
 
+const Formula = () => {
+    return (
+        <Accordion sx={{ mt: 5,}}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+            >
+                <Typography>Used Formula</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <Typography 
+                    sx={{ color: 'caption.main', mb: 1 ,}}
+                    variant="body2"
+                    component="div"
+                >
+                    Adjustment Pace = Pace * ((Standard Weight / Weight) ^ (-2/9))
+                </Typography>
+            </AccordionDetails>
+        </Accordion>
+    );
+}
 
 export default WeightAdjustment
