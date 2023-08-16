@@ -40,7 +40,11 @@ const PaceToWatts = () => {
         setTabNum(newValue);
     };
     const saveChoice = () => {
-        const choice = {pace: `${pace.minutes}:${pace.seconds}.${pace.milliseconds}`, watts: watts};
+        let seconds = pace.seconds;
+        if (pace.seconds < 10) {
+            seconds = `0${pace.seconds}`;
+        }
+        const choice = {pace: `${pace.minutes}:${seconds}.${pace.milliseconds}`, watts: watts};
         setChoices([...choices, choice]);
     };
     const resetChoice = () => {
@@ -200,6 +204,11 @@ const WattsToTab = ({ pace, watts, onChangeWatts }) => {
         onChangeWatts(e.target.value)
     };
 
+    let seconds = pace.seconds;
+    if (pace.seconds < 10) {
+        seconds = `0${pace.seconds}`;
+    }
+
     return (
         <>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -213,7 +222,7 @@ const WattsToTab = ({ pace, watts, onChangeWatts }) => {
                     onChange={handleWattsChange}
                 />
             </Box>
-            <h2>{pace.minutes}:{pace.seconds}.{pace.milliseconds} /500m</h2>
+            <h2>{pace.minutes}:{seconds}.{pace.milliseconds} /500m</h2>
         </>
     )
 }
