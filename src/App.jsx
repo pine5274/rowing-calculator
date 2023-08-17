@@ -8,6 +8,7 @@ import Sidebar from './component/Sidebar';
 import Index from './component/pages/Index';
 import GearRatio from './component/pages/GearingRatio';
 import PaceToWatts from './component/pages/PaceToWatts';
+import ErgoPacing from './component/pages/ErgoPacing';
 import ErgoPrediction from './component/pages/ErgoPrediction';
 import WeightAdjustment from './component/pages/WeightAdjustment';
 import NoMatch from './component/pages/NoMatch';
@@ -33,6 +34,7 @@ function App() {
 								<Route path={`${ROUTE}`} element={<Index />} />
 								<Route path={`${ROUTE}/gearing-ratio`} element={<GearRatio />} />
 								<Route path={`${ROUTE}/pace-to-watts`} element={<PaceToWatts />} />
+								<Route path={`${ROUTE}/ergo-pacing`} element={<ErgoPacing />} />
 								<Route path={`${ROUTE}/ergo-prediction`} element={<ErgoPrediction />} />
 								<Route path={`${ROUTE}/weight-adjustment`} element={<WeightAdjustment />} />
 								<Route path="*" element={<NoMatch />} />

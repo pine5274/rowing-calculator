@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import BuildIcon from '@mui/icons-material/Build';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import FlagIcon from '@mui/icons-material/Flag';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
@@ -37,6 +38,18 @@ const IndexList = (props) => {
                             <SyncAltIcon />
                         </ListItemIcon>
                         <ListItemText primary={'Pace to Watts'} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key={'Ergo Pacing'} disablePadding>
+                    <ListItemButton
+                        component={Link}
+                        onClick={props.onClick}
+                        to={`${ROUTE}/ergo-pacing`}
+                    >
+                        <ListItemIcon>
+                            <ListAltIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Ergo Pacing'} />
                     </ListItemButton>
                 </ListItem>
                 <ListItem key={'Ergo Prediction'} disablePadding>
