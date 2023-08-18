@@ -19,9 +19,13 @@ import HomeIcon from '@mui/icons-material/Home';
 const Sidebar = (props) => {
 	const [mobileOpen, setMobileOpen] = React.useState(false);
 
-	const handleDrawerToggle = () => {
-	  	setMobileOpen(!mobileOpen);
-	};
+	const openDrawer = () => {
+		setMobileOpen(true);
+	}
+
+	const closeDrawer = () => {
+		setMobileOpen(false);
+	}
 
     const drawer = (
 		<div>
@@ -31,7 +35,7 @@ const Sidebar = (props) => {
 				<ListItem key={'Index'} disablePadding>
 					<ListItemButton
 						component={RouterLink}
-						onClick={handleDrawerToggle}
+						onClick={closeDrawer}
 						to="/rowing-calculator/"
 					>
 						<ListItemIcon>
@@ -43,7 +47,7 @@ const Sidebar = (props) => {
 			</List>
 			<Divider />
 			<IndexList
-				onClick={handleDrawerToggle}
+				onClick={closeDrawer}
 			/>
 		</div>
     );
@@ -62,7 +66,7 @@ const Sidebar = (props) => {
 						color="inherit"
 						aria-label="open drawer"
 						edge="start"
-						onClick={handleDrawerToggle}
+						onClick={openDrawer}
 						sx={{ mr: 2, display: { lg: 'none' } }}
 					>
 						<MenuIcon />
@@ -86,7 +90,7 @@ const Sidebar = (props) => {
 				<Drawer
 					variant="temporary"
 					open={mobileOpen}
-					onClose={handleDrawerToggle}
+					onClose={closeDrawer}
 					ModalProps={{
 						keepMounted: true, // Better open performance on mobile.
 					}}
