@@ -10,6 +10,7 @@ import SyncAltIcon from '@mui/icons-material/SyncAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import FlagIcon from '@mui/icons-material/Flag';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 const IndexList = (props) => {
     const ROUTE = '/rowing-calculator';
@@ -74,6 +75,18 @@ const IndexList = (props) => {
                             <ManageAccountsIcon />
                         </ListItemIcon>
                         <ListItemText primary={'Weight Adjustment'} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key={'1RM Conversion Table'} disablePadding>
+                    <ListItemButton
+                        component={Link}
+                        onClick={props.onClick}
+                        to={`${ROUTE}/repetition-maximum`}
+                    >
+                        <ListItemIcon>
+                            <FitnessCenterIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'1RM Conversion Table'} />
                     </ListItemButton>
                 </ListItem>
             </List>

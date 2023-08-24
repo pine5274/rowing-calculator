@@ -11,6 +11,7 @@ import PaceToWatts from './component/pages/PaceToWatts';
 import ErgoPacing from './component/pages/ErgoPacing';
 import ErgoPrediction from './component/pages/ErgoPrediction';
 import WeightAdjustment from './component/pages/WeightAdjustment';
+import RepetitionMaximum from './component/pages/RepetitionMaximum';
 import NoMatch from './component/pages/NoMatch';
 import { getPalette } from './data/palette';
 
@@ -37,6 +38,7 @@ function App() {
 								<Route path={`${ROUTE}/ergo-pacing`} element={<ErgoPacing />} />
 								<Route path={`${ROUTE}/ergo-prediction`} element={<ErgoPrediction />} />
 								<Route path={`${ROUTE}/weight-adjustment`} element={<WeightAdjustment />} />
+								<Route path={`${ROUTE}/repetition-maximum`} element={<RepetitionMaximum />} />
 								<Route path="*" element={<NoMatch />} />
 							</Routes>
 					</Box>	
