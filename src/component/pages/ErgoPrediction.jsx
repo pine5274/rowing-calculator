@@ -254,7 +254,7 @@ const AddPrediction = ({
     const helperText = isValid ? '' : '*Only number.';
 
     return (
-        <Paper sx={{ p: 2 }}>
+        <Paper sx={{ p: 2, maxWidth:400 }}>
             <div>
                 <ToggleButtonGroup
                     sx={{ mx: 1, mb: 3, width: '20ch', }}
