@@ -132,8 +132,9 @@ const ErgoPrediction = () => {
 
     const paceSecond = Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.milliseconds) * 0.1;
     const tableData = createTableData(paceSecond);
+    console.log(tableData);
 
-    return (
+    return (    
         <>
             <h1>Ergo Prediction</h1>
             <Typography variant="body2">

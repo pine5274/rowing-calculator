@@ -16,7 +16,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import InputAdornment from '@mui/material/InputAdornment';
 
 const WeightAdjustment = () => {
     const [pace, setPace] = useState({
@@ -135,14 +135,10 @@ const WeightAdjustment = () => {
                         value={weight}
                         inputProps={{ inputMode: 'numeric', type: 'tel', }}
                         onChange={handleWeightChange}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                        }}
                     />
-                    <Box
-                        sx={{ mb: 1, display: 'flex', alignItems: 'flex-end', }}
-                    >
-                        <Typography sx={{ color: 'caption.main', }} variant="body1" component="div">
-                            kg
-                        </Typography>
-                    </Box>
                     <TextField
                         label="Standard weight"
                         id="weight"
@@ -150,14 +146,10 @@ const WeightAdjustment = () => {
                         value={standardWeight}
                         inputProps={{ inputMode: 'numeric', type: 'tel', }}
                         onChange={handleStandardWeightChange}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                        }}
                     />
-                    <Box
-                        sx={{ mb: 1, display: 'flex', alignItems: 'flex-end', }}
-                    >
-                        <Typography sx={{ color: 'caption.main', }} variant="body1" component="div">
-                            kg
-                        </Typography>
-                    </Box>
                 </Box>
                 <h2>
                     Adjustment Pace: {adjustPace} /500m
