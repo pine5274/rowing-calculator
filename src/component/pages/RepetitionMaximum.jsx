@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
+import Link from '@mui/material/Link';
 
 const RepetitionMaximum = () => {
 
@@ -48,7 +49,7 @@ const RepetitionMaximum = () => {
 
     return (
         <>
-            <h1>1RM Conversion </h1>
+            <h1>1RM Conversion</h1>
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 <TextField
                     label="Weight"
@@ -107,8 +108,14 @@ const RepetitionMaximum = () => {
 
 const TrainingLoadTable = ({ tableData }) => {
     return (
-        <TableContainer sx={{ maxWidth: 200 }} component={Paper}>
+        <TableContainer sx={{ maxWidth: 225 }} component={Paper}>
             <Table size="small" aria-label="ergo predict table">
+                <caption>
+                    cf.&nbsp;
+                    <Link href="https://www.nsca.com/contentassets/61d813865e264c6e852cadfe247eae52/nsca_training_load_chart.pdf">
+                        NSCA Training Load Chart;
+                    </Link>
+                </caption>
                 <TableHead>
                     <TableRow>
                         <TableCell align="right">RM</TableCell>

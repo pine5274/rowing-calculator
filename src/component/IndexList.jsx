@@ -86,7 +86,7 @@ const IndexList = (props) => {
                         <ListItemIcon>
                             <FitnessCenterIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'1RM Conversion Table'} />
+                        <ListItemText primary={'1RM Conversion'} />
                     </ListItemButton>
                 </ListItem>
             </List>
