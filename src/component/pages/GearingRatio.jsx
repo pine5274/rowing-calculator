@@ -18,6 +18,12 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { getScullingExample } from "../../data/oarRig"
 import { getSweepExample } from "../../data/oarRig"
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import MuiAccordion from '@mui/material/Accordion';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import MuiAccordionDetails from '@mui/material/AccordionDetails';
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -52,51 +58,76 @@ function a11yProps(index) {
 	};
 }
 
+const Accordion = styled((props) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+))(({ theme }) => ({
+    width: 650,
+    m: 0,
+    '&:before': {
+        display: 'none',
+    },
+}));
+
+const AccordionSummary = styled((props) => (
+    <MuiAccordionSummary
+        expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
+        {...props}
+    />
+))(({ theme }) => ({
+    backgroundColor: 'background.default',
+    m: 0,
+    flexDirection: 'row-reverse',
+    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+        transform: 'rotate(90deg)',
+    },
+    '& .MuiAccordionSummary-content': {
+        marginLeft: theme.spacing(1),
+    },
+}));
+  
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    paddingTop: 0,
+}));
+
 const ScullingGearRatio = () => {
+    const [expanded, setExpanded] = React.useState('');
+
+    const handleChange = (panel) => (event, newExpanded) => {
+      setExpanded(newExpanded ? panel : false);
+    };
+
     const [oarRig, setOarRig] = useState({
         span: 159,
         length: 286,
         inboard: 88
     });
     const getGearingRatio = () => {
-        if (span <= 0) {
-            return '';
+        if (oarRig.span <= 0) {
+            return 0;
         }
         
-        return (oarLength - inboard) / (span / 2);
+        return ((Number(oarRig.length) - Number(oarRig.inboard)) / (Number(oarRig.span) / 2)).toFixed(3);
     }
-    const [span, setSpan] = useState(159);
-    const [oarLength, setOarLength] = useState(286);
-    const [inboard, setInboard] = useState(88);
-    const [gearingRatio, setGearingRatio] = useState(0);
-    const [overLap, setOverLap] = useState(0);
+
+    const gearingRatio = getGearingRatio();
+    const overLap = (Number(oarRig.inboard) * 2 - Number(oarRig.span)).toFixed(1);
     const [choices, setChoices] = useState([]);
 
-    useEffect(() => {
-        if (span <= 0) {
-            setGearingRatio('');
-        } else {
-            const gearingRatio = (Number(oarLength) - Number(inboard)) / (Number(span)/2);
-            setGearingRatio(gearingRatio.toFixed(3));
-            const overLap = Number(inboard) * 2 - Number(span);
-            setOverLap(overLap.toFixed(1));
-        }
-    }, [span, oarLength, inboard]);
-
     const handleSpanChange = (e) => {
-        setSpan(e.target.value);
+        setOarRig({...oarRig, span: e.target.value});
     };
     const handleOarLengthChange = (e) => {
-        setOarLength(e.target.value);
+        setOarRig({...oarRig, length: e.target.value});
     };
     const handleInboardChange = (e) => {
-        setInboard(e.target.value);
+        setOarRig({...oarRig, inboard: e.target.value});
     };
     const saveChoice = () => {
         const choice = {
-            span: span,
-            oarLength: oarLength,
-            inboard: inboard,
+            span: oarRig.span,
+            oarLength: oarRig.length,
+            inboard: oarRig.inboard,
             overLap: overLap,
             gearingRatio: gearingRatio
         };
@@ -110,7 +141,7 @@ const ScullingGearRatio = () => {
                     label="Span"
                     id="span"
                     sx={{ m: 1, width: '25ch' }}
-                    value={span}
+                    value={oarRig.span}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     onChange={handleSpanChange}
                     InputProps={{
@@ -121,7 +152,7 @@ const ScullingGearRatio = () => {
                     label="Oar Length"
                     id="oar-length"
                     sx={{ m: 1, width: '25ch' }}
-                    value={oarLength}
+                    value={oarRig.length}
                     inputProps={{ inputMode: 'numeric', type: 'tel' }}
                     onChange={handleOarLengthChange}
                     InputProps={{
@@ -132,7 +163,7 @@ const ScullingGearRatio = () => {
                     label="Inboard"
                     id="inboard"
                     sx={{ m: 1, width: '25ch' }}
-                    value={inboard}
+                    value={oarRig.inboard}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     onChange={handleInboardChange}
                     InputProps={{
@@ -157,7 +188,19 @@ const ScullingGearRatio = () => {
                 </Button>
             </Box>
             <ChoseTable choices={choices} />
-            <Divider />
+            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+                <AccordionSummary
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
+                    <Typography>
+                        Recommended Table
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <RecommendTable oarRig={oarRig} />
+                </AccordionDetails>
+            </Accordion>
             <h3>
                 Sculling Example
             </h3>
@@ -165,6 +208,80 @@ const ScullingGearRatio = () => {
         </>
       );
 }
+
+const RecommendTable = ({oarRig}) => {
+
+    const inboards = [
+        Number(oarRig.inboard) - 1.0,
+        Number(oarRig.inboard) - 0.5,
+        Number(oarRig.inboard),
+        Number(oarRig.inboard) + 0.5,
+        Number(oarRig.inboard) + 1.0,
+    ];
+
+    const lengths = [
+        Number(oarRig.length) - 1.0,
+        Number(oarRig.length) - 0.5,
+        Number(oarRig.length),
+        Number(oarRig.length) + 0.5,
+        Number(oarRig.length) + 1.0,
+    ];
+
+    const tableColors = {
+        13: '#B4A6B3',
+        12: '#AD9EAE',
+        11: '#A497A7',
+        10: '#9B8FA1',
+        9: '#91889B',
+        8: '#878195',
+        7: '#7D798E',
+        6: '#727288',
+        5: '#6A6D82',
+        4: '#63677A',
+        3: '#5D6272',
+        2: '#565C6A',
+        1: '#505662',
+    };
+
+    return (
+        <TableContainer component={Paper} sx={{ my:2, maxWidth: 500 }}>
+            <Table sx={{ minWidth: 350 }} size="small" aria-label="sculling chose table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell></TableCell>
+                        {inboards.map((inboard, i) => (
+                            <TableCell key={i} align="right" color="primary">{inboard}</TableCell>
+                            ))}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {lengths.map((length, i) => {
+                        const row = inboards.map((inboard, j) => {
+                            const bgNum = i-j + 8;
+                            const bg = tableColors[bgNum]
+                            
+                            return (
+                                <TableCell key={j} align="right" style={{ backgroundColor: bg }}>
+                                    {((length - inboard) / (oarRig.span / 2)).toFixed(3)}
+                                </TableCell>
+                            );
+                        });
+                        
+                        return (
+                            <TableRow
+                            key={i}
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell align="left">{length}</TableCell>
+                                {row}
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+};
 
 const ChoseTable = (props) => {
     if (props.choices.length === 0) {
@@ -187,7 +304,7 @@ const ChoseTable = (props) => {
     });
 
     return (
-        <TableContainer component={Paper} sx={{ my:2, maxWidth: 1000 }}>
+        <TableContainer component={Paper} sx={{ my:2, maxWidth: 500 }}>
             <Table sx={{ minWidth: 350 }} size="small" aria-label="sculling chose table">
                 <TableHead>
                     <TableRow>
@@ -218,32 +335,32 @@ const ChoseTable = (props) => {
 };
 
 const SweepGearRatio = () => {
-    const [spread, setSpread] = useState(87);
-    const [oarLength, setOarLength] = useState(374);
-    const [inboard, setInboard] = useState(117);
-    const [gearingRatio, setGearingRatio] = useState(0);
-    const [overLap, setOverLap] = useState(0);
+    const [oarRig, setOarRig] = useState({
+        spread: 87,
+        length: 374,
+        inboard: 117
+    });
+    const getGearingRatio = () => {
+        if (oarRig.span <= 0) {
+            return 0;
+        }
+        
+        return ((oarRig.length - oarRig.inboard) / oarRig.spread).toFixed(3);
+    }
+
+    const gearingRatio = getGearingRatio();
+    const overLap = oarRig.inboard * 2 - oarRig.spread;
+
     const [choices, setChoices] = useState([]);
 
-    useEffect(() => {
-        if (spread <= 0) {
-            setGearingRatio('');
-        } else {
-            const gearingRatio = (Number(oarLength) - Number(inboard)) / Number(spread);
-            setGearingRatio(gearingRatio.toFixed(3));
-            const overLap = Number(inboard) - Number(spread);
-            setOverLap(overLap.toFixed(1));
-        }	
-    }, [spread, oarLength, inboard]);
-
     const handleSpreadChange = (e) => {
-        setSpread(e.target.value);
+        setOarRig({...oarRig, spread: e.target.value});
     };
     const handleOarLengthChange = (e) => {
-        setOarLength(e.target.value);
+        setOarRig({...oarRig, length: e.target.value});
     };
     const handleInboardChange = (e) => {
-        setInboard(e.target.value);
+        setOarRig({...oarRig, inboard: e.target.value});
     };
     const saveChoice = () => {
         const choice = {
@@ -263,7 +380,7 @@ const SweepGearRatio = () => {
                     label="Spread"
                     id="spread"
                     sx={{ m: 1, width: '25ch' }}
-                    value={spread}
+                    value={oarRig.spread}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     onChange={handleSpreadChange}
                     InputProps={{
@@ -274,7 +391,7 @@ const SweepGearRatio = () => {
                     label="Oar Length"
                     id="oar-length"
                     sx={{ m: 1, width: '25ch' }}
-                    value={oarLength}
+                    value={oarRig.length}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     onChange={handleOarLengthChange}
                     InputProps={{
@@ -285,7 +402,7 @@ const SweepGearRatio = () => {
                     label="Inboard"
                     id="inboard"
                     sx={{ m: 1, width: '25ch' }}
-                    value={inboard}
+                    value={oarRig.inboard}
                     inputProps={{ inputMode: 'numeric', type: 'tel', }}
                     onChange={handleInboardChange}
                     InputProps={{
@@ -337,8 +454,8 @@ const ScullingExample = () => {
     });
 
     return (
-        <TableContainer component={Paper} sx={{ maxWidth: 1000 }}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="sculling table">
+        <TableContainer component={Paper} sx={{ width: 650 }}>
+            <Table size="small" aria-label="sculling table">
                 <caption>
                     cf. High Performance Rowing (John McArthur)
                     <br></br>
@@ -398,8 +515,8 @@ const SweepExample = () => {
     });
 
     return (
-        <TableContainer component={Paper} sx={{ maxWidth: 1000 }}>
-            <Table sx={{ minWidth: 650 }} size="small" aria-label="sweep table">
+        <TableContainer component={Paper} sx={{ width: 650 }}>
+            <Table size="small" aria-label="sweep table">
                 <caption>
                     cf.&nbsp;
                     <Link href="https://d2wmdlq830ho5j.cloudfront.net/worldrowing/wp-content/uploads/2020/12/04183534/CoachingManualLevelII_English.pdf">
