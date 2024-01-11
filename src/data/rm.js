@@ -40,6 +40,10 @@ const rm = [
         percentage: 0.75,
     },
     { 
+        reps: 11,
+        percentage: 0.73,
+    },
+    { 
         reps: 12,
         percentage: 0.7,
     },

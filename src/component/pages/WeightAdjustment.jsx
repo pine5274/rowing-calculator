@@ -29,22 +29,22 @@ const WeightAdjustment = () => {
     const [choices, setChoices] = useState([]);
 
     const handleMinutesChange = (e) => {
-        const currentPace = { ...pace, minutes: Number(e.target.value) };
+        const currentPace = { ...pace, minutes: e.target.value };
         setPace(currentPace);
     };
     const handleSecondsChange = (e) => {
-        const currentPace = { ...pace, seconds: Number(e.target.value) };
+        const currentPace = { ...pace, seconds: e.target.value };
         setPace(currentPace);
     };
     const handleTenthsChange = (e) => {
-        const currentPace = { ...pace, tenths: Number(e.target.value) };
+        const currentPace = { ...pace, tenths: e.target.value };
         setPace(currentPace);
     };
     const handleWeightChange = (e) => {
-        setWeight(Number(e.target.value));
+        setWeight(e.target.value);
     };
     const handleStandardWeightChange = (e) => {
-        setStandardWeight(Number(e.target.value));
+        setStandardWeight(e.target.value);
     };
 
     const saveChoice = () => {
@@ -57,8 +57,8 @@ const WeightAdjustment = () => {
         setChoices([...choices, choice]);
     };
     const calcAdjustPace = () => {
-        const currentPace = pace.minutes * 60 + pace.seconds + pace.tenths * 0.1;
-        return currentPace * ((standardWeight / weight) ** (-2/9));
+        const currentPace = Number(pace.minutes) * 60 + Number(pace.seconds) + Number(pace.tenths) * 0.1;
+        return currentPace * ((Number(standardWeight) / Number(weight)) ** (-2/9));
     };
     
     const convertTimeToMMSS = (time) => {

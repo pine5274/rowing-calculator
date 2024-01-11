@@ -21,10 +21,10 @@ const RepetitionMaximum = () => {
     const [percent1RM, setPercent1RM] = useState(100);
 
     const handleWeightChange = (e) => {
-        setWeight(Number(e.target.value));
+        setWeight(e.target.value);
     };
     const handleRepsChange = (e) => {
-        const r = Number(e.target.value)
+        const r = e.target.value
         if (r < 1 || r > 12) {
             setIsValid(false);
         } else {
@@ -33,18 +33,18 @@ const RepetitionMaximum = () => {
         setReps(r);
     };
     const handlePercent1RMChange = (e) => {
-        setPercent1RM(Number(e.target.value));
+        setPercent1RM(e.target.value);
     };
 
     const rm = getRm();
     const percentage = rm.filter((value) => {
-        return value.reps === reps;
+        return value.reps === Number(reps);
     })
 
-    const oneRm = percentage.length !== 0 ? (weight / percentage[0].percentage).toFixed(1) : 0;
+    const oneRm = percentage.length !== 0 ? (Number(weight) / percentage[0].percentage).toFixed(1) : 0;
     const errorMessage = isValid ? '' : '*Reps must to be 1 to 12.';
     const tableData = rm.map((value) => {
-        return { rm: value.reps, kg: (oneRm * value.percentage * percent1RM / 100).toFixed(1) };
+        return { rm: value.reps, kg: (oneRm * value.percentage * Number(percent1RM) / 100).toFixed(1) };
     });
 
     return (
