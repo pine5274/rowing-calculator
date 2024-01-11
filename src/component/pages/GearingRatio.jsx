@@ -74,7 +74,7 @@ const AccordionSummary = styled((props) => (
         {...props}
     />
 ))(({ theme }) => ({
-    backgroundColor: 'background.default',
+    backgroundColor: 'background.paper',
     m: 0,
     flexDirection: 'row-reverse',
     '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
@@ -188,7 +188,7 @@ const ScullingGearRatio = () => {
                 </Button>
             </Box>
             <ChoseTable choices={choices} />
-            <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+            {/* <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                 <AccordionSummary
                     aria-controls="panel1a-content"
                     id="panel1a-header"
@@ -200,7 +200,8 @@ const ScullingGearRatio = () => {
                 <AccordionDetails>
                     <RecommendTable oarRig={oarRig} />
                 </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
+            <Divider />
             <h3>
                 Sculling Example
             </h3>

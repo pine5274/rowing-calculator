@@ -14,6 +14,7 @@ import WeightAdjustment from './component/pages/WeightAdjustment';
 import RepetitionMaximum from './component/pages/RepetitionMaximum';
 import NoMatch from './component/pages/NoMatch';
 import { getPalette } from './data/palette';
+import '../src/assets/style.css';
 
 const theme = createTheme(getPalette());
 
