@@ -350,7 +350,7 @@ const SweepGearRatio = () => {
     }
 
     const gearingRatio = getGearingRatio();
-    const overLap = oarRig.inboard * 2 - oarRig.spread;
+    const overLap = oarRig.inboard - oarRig.spread;
 
     const [choices, setChoices] = useState([]);
 
