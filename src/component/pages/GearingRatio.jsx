@@ -365,9 +365,9 @@ const SweepGearRatio = () => {
     };
     const saveChoice = () => {
         const choice = {
-            span: spread,
-            oarLength: oarLength,
-            inboard: inboard,
+            span: oarRig.spread,
+            oarLength: oarRig.length,
+            inboard: oarRig.inboard,
             overLap: overLap,
             gearingRatio: gearingRatio
         };
