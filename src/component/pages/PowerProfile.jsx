@@ -58,7 +58,6 @@ const PowerProfile = () => {
         [], [], [], [], [], []
     ]);
 
-
     for (let i = 0; i < rows.length; i++) {
         if (i == rows.length -1) {
             break;
@@ -80,8 +79,6 @@ const PowerProfile = () => {
             colorArray[i+1][5] = tableColors[16];
         }
     }
-
-    console.log(rows, powerProfile);
 
     return (
         <TableContainer component={Paper} sx={{ width: 500 }}>
@@ -117,6 +114,7 @@ const PowerProfile = () => {
                 </TableBody>
             </Table>
         </TableContainer>
-    )
+    );
 }
+
 export default PowerProfile
