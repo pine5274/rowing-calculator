@@ -19,7 +19,6 @@ import TableRow from '@mui/material/TableRow';
 import { getScullingExample } from "../../data/oarRig"
 import { getSweepExample } from "../../data/oarRig"
 import { styled } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
 import MuiAccordionSummary from '@mui/material/AccordionSummary';

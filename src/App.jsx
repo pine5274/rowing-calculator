@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Sidebar from './component/Sidebar';
 import Index from './component/pages/Index';
+// import PowerProfile from './component/pages/PowerProfile';
 import GearRatio from './component/pages/GearingRatio';
 import PaceToWatts from './component/pages/PaceToWatts';
 import ErgoPacing from './component/pages/ErgoPacing';
@@ -34,6 +35,7 @@ function App() {
 							<Toolbar />
 							<Routes>
 								<Route path={`${ROUTE}`} element={<Index />} />
+								{/* <Route path={`${ROUTE}/pw`} element={<PowerProfile />} /> */}
 								<Route path={`${ROUTE}/gearing-ratio`} element={<GearRatio />} />
 								<Route path={`${ROUTE}/pace-to-watts`} element={<PaceToWatts />} />
 								<Route path={`${ROUTE}/ergo-pacing`} element={<ErgoPacing />} />
