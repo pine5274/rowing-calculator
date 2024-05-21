@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Sidebar from './component/Sidebar';
 import Index from './component/pages/Index';
-// import PowerProfile from './component/pages/PowerProfile';
+import ErgoScoreBoatSpeed from './component/pages/ErgoScoreBoatSpeed';
 import GearRatio from './component/pages/GearingRatio';
 import PaceToWatts from './component/pages/PaceToWatts';
 import ErgoPacing from './component/pages/ErgoPacing';
@@ -14,10 +14,10 @@ import ErgoPrediction from './component/pages/ErgoPrediction';
 import WeightAdjustment from './component/pages/WeightAdjustment';
 import RepetitionMaximum from './component/pages/RepetitionMaximum';
 import NoMatch from './component/pages/NoMatch';
-import { getPalette } from './data/palette';
+import { getTheme } from './data/theme';
 import '../src/assets/style.css';
 
-const theme = createTheme(getPalette());
+const theme = createTheme(getTheme());
 
 function App() {
 	const drawerWidth = 240;
@@ -42,6 +42,7 @@ function App() {
 								<Route path={`${ROUTE}/ergo-prediction`} element={<ErgoPrediction />} />
 								<Route path={`${ROUTE}/weight-adjustment`} element={<WeightAdjustment />} />
 								<Route path={`${ROUTE}/repetition-maximum`} element={<RepetitionMaximum />} />
+								<Route path={`${ROUTE}/ergo-score-boat-speed`} element={<ErgoScoreBoatSpeed />} />
 								<Route path="*" element={<NoMatch />} />
 							</Routes>
 					</Box>	

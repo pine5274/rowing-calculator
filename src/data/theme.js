@@ -1,4 +1,4 @@
-const palette = {
+const theme = {
     palette: {
         mode: 'dark',
         primary: {
@@ -32,6 +32,6 @@ const palette = {
     },
 }
 
-export function getPalette() {
-    return palette;
+export function getTheme() {
+    return theme;
 }

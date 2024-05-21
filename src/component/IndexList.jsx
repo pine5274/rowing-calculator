@@ -11,6 +11,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import FlagIcon from '@mui/icons-material/Flag';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import SpeedIcon from '@mui/icons-material/Speed';
 
 const IndexList = (props) => {
     const ROUTE = '/rowing-calculator';
@@ -87,6 +88,18 @@ const IndexList = (props) => {
                             <FitnessCenterIcon />
                         </ListItemIcon>
                         <ListItemText primary={'1RM Conversion'} />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key={'Correlation of the ergo score with the boat speed'} disablePadding>
+                    <ListItemButton
+                        component={Link}
+                        onClick={props.onClick}
+                        to={`${ROUTE}/ergo-score-boat-speed`}
+                    >
+                        <ListItemIcon>
+                            <SpeedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Correlation of the ergo score with the boat speed'} />
                     </ListItemButton>
                 </ListItem>
             </List>

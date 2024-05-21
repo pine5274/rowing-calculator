@@ -5,7 +5,7 @@
   "scripts": {
     "deploy": "gh-pages -d build",
     "dev": "vite",
-    "postbuild": "cp build/index.html build/404.html",
+    "postbuild": "copy build\\index.html build\\404.html",
     "build": "vite build",
     "serve": "vite preview",
     "test": "jest"
