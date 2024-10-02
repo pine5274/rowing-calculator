@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import ergoScoreBoatSpeed2 from '../../data/ergoScoreBoatSpeed';
+import ergoScoreBoatSpeed from '../../data/ergoScoreBoatSpeed';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,7 +19,6 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme(getTheme());
 
 const ErgoScoreBoatSpeed = () => {
-
     const [boatType, setBoatType] = React.useState('1x');
 	const handleChange = (event) => {
 		setBoatType(event.target.value);
@@ -51,15 +50,15 @@ const ErgoScoreBoatSpeed = () => {
                         <MenuItem value={'8+'}>8+</MenuItem>
                     </Select>
                 </FormControl>
-                <CorrelationTable2 boatType={boatType}/>
+                <CorrelationTable boatType={boatType}/>
             </Box>
         </Box>
     );
 }
 
-const CorrelationTable2 = ({ boatType }) => {
+const CorrelationTable = ({ boatType }) => {
 
-    const correlation = ergoScoreBoatSpeed2()[boatType];
+    const correlation = ergoScoreBoatSpeed()[boatType];
     const head = [
         'ergo',
         '50kg',
@@ -104,53 +103,7 @@ const CorrelationTable2 = ({ boatType }) => {
                                             </TableCell>
                                     }
                                     return <TableCell key={j} align="right">{value.slice(1, 5)}</TableCell>
-                                }
-                                )}
-                            </TableRow>
-                        )}
-                    )}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
-}
-
-const CorrelationTable = ({ boatType }) => {
-
-    const correlation = ergoScoreBoatSpeed();
-    const data = correlation.map((value) => {
-       return value[boatType];
-    }).map((value) => {
-        return value.split(' ');
-    });
-
-    const head = data[0];
-    const indexDelete = 0;
-    const body = data.filter((_, index) => index !== indexDelete);
-
-    return (
-        <TableContainer component={Paper} sx={{my: 2, maxWidth: 950, maxHeight: 600 }}>
-            <Table stickyHeader sx={{ minWidth: 350 }} size="small" aria-label="sculling chose table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right">Ergo\Mass(kg)</TableCell>
-                        {head.map((row, i) => 
-                            <TableCell key={i} align="right">{row}</TableCell>
-                        )}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {body.map((value, i) => {
-                        const indexDelete = 1;
-                        const row = value.filter((_, index) => index !== indexDelete);
-                        return (
-                            <TableRow
-                                key={i}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                {row.map((value, j) => 
-                                    <TableCell key={j} align="right">{value}</TableCell>
-                                )}
+                                })}
                             </TableRow>
                         )}
                     )}
