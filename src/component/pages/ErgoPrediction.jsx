@@ -39,9 +39,19 @@ const ErgoPrediction = () => {
         return `${mm}:${ss}`;
     };
 
+    const paceToWatts = (pace) => {
+        const watts = (2.80 / (pace / 500) ** 3).toFixed(1);
+        return watts;
+    }
+
     const predictTTPace = (race, paceSecond) => {
         const time =  paceSecond * (race / Number(distance)) ** (1/18);
         return convertTimeToMMSS(time);
+    };
+
+    const predictTTWatt = (race, paceSecond) => {
+        const time =  paceSecond * (race / Number(distance)) ** (1/18);
+        return paceToWatts(time);
     };
 
     const predictTTResult = (race, paceSecond) => {
@@ -53,6 +63,12 @@ const ErgoPrediction = () => {
         const target_seconds = 4 * paceSecond;
         const time = race / ((Number(distance) / 500) * (race / target_seconds) ** (17/18));
         return convertTimeToMMSS(time);
+    };
+
+    const predictDTWatt = (race, paceSecond) => {
+        const target_seconds = 4 * paceSecond;
+        const time = race / ((Number(distance) / 500) * (race / target_seconds) ** (17/18));
+        return paceToWatts(time);
     };
 
     const predictDTResult = (race, paceSecond) => {
@@ -118,14 +134,16 @@ const ErgoPrediction = () => {
         const tt = race.distance.map((race) => {
             const raceStr = `${(race)}m`;
             const paceStr = predictTTPace(race, paceSecond);
+            const watt = predictTTWatt(race, paceSecond);
             const resultStr = predictTTResult(race, paceSecond);
-            return { raceStr, paceStr, resultStr };
+            return { raceStr, paceStr, watt, resultStr };
         });
         const dt = race.minute.map((race) => {
             const raceStr = `${race/60}min`;
             const paceStr = predictDTPace(race, paceSecond);
+            const watt = predictDTWatt(race, paceSecond);
             const resultStr = predictDTResult(race, paceSecond);
-            return { raceStr, paceStr, resultStr };
+            return { raceStr, paceStr, watt, resultStr };
         });
         return [...tt, ...dt];
     };
@@ -213,12 +231,13 @@ const ErgoPrediction = () => {
 
 const PredictionTable = ({ tableData }) => {
     return (
-        <TableContainer sx={{ maxWidth: 400 }} component={Paper}>
+        <TableContainer sx={{ maxWidth: 500 }} component={Paper}>
             <Table size="small" aria-label="ergo predict table">
                 <TableHead>
                     <TableRow>
                         <TableCell>Race</TableCell>
-                        <TableCell align="right">Predict Pace&nbsp;(/500m)</TableCell>
+                        <TableCell align="right">Predict Pace&nbsp;<br></br>[/500m]</TableCell>
+                        <TableCell align="right">Predict Watts&nbsp;<br></br>[W]</TableCell>
                         <TableCell align="right">Predict Result&nbsp;</TableCell>
                     </TableRow>
                 </TableHead>
@@ -232,6 +251,7 @@ const PredictionTable = ({ tableData }) => {
                         {row.raceStr}
                     </TableCell>
                     <TableCell align="right">{row.paceStr}</TableCell>
+                    <TableCell align="right">{row.watt}</TableCell>
                     <TableCell align="right">{row.resultStr}</TableCell>
                     </TableRow>
                 ))}
